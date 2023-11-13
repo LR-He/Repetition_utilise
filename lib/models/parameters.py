@@ -31,4 +31,4 @@ class UpConvType(Enum):
 class TemporalAggregationMode(Enum):
     ATT_GROUP = 'att_group'
     ATT_MEAN = 'att_mean'
-    NONE = None
+    # NONE = None
