@@ -159,10 +159,25 @@ class UTILISE(nn.Module):
              self.agg_mode = None
         else :
             self.agg_mode = TemporalAggregationMode(agg_mode)
+            
         self.upconv_type = UpConvType(upconv_type)
-        self.encoder_norm = NormType(encoder_norm)
-        self.decoder_norm = NormType(decoder_norm)
-        self.skip_norm = NormType(skip_norm)
+        
+        # self.encoder_norm = NormType(encoder_norm)
+        if encoder_norm is None:
+             self.encoder_norm = None
+        else :
+            self.encoder_norm = NormType(encoder_norm)
+        # self.decoder_norm = NormType(decoder_norm)
+        if decoder_norm is None:
+             self.decoder_norm = None
+        else :
+            self.decoder_norm = NormType(decoder_norm)
+        # self.skip_norm = NormType(skip_norm)
+        if skip_norm is None:
+             self.skip_norm = None
+        else :
+            self.skip_norm = NormType(skip_norm)
+        
         self.activation = str2ActivationType(activation)
 
         if output_activation is None or output_activation is True:
