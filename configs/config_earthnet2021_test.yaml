@@ -1,0 +1,21 @@
+data:
+    dataset: earthnet2021        
+    root: data/
+    hdf5_file: earthnet2021_iid_test_split.hdf5
+    preprocessed: false
+    split: iid
+    channels: bgr-nir
+    max_seq_length:
+    filter_settings:
+
+mask:
+    mask_type: real_clouds
+    dilate_cloud_masks: false # 扩大云遮罩，即要不要将云掩膜的边界往外扩大。
+    # "dilate" 是一个英语动词，指的是扩大、膨胀或使膨胀。
+    # 在图像处理或计算机视觉中，"dilate" 通常用于指示扩大图像中的特定区域或遮罩。
+    # 这个过程可以通过增加区域的像素数量来增加特定特征的大小。
+    # 例如，"膨胀云遮罩" 意味着扩大云遮罩区域，使它包含更多的像素。
+    # 这有助于处理云覆盖的影响，以更好地分析图像中的其他特征。
+    
+misc:
+    run_mode: test

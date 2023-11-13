@@ -1,0 +1,14 @@
+h5py
+ipywidgets
+ipykernel
+kornia
+matplotlib
+numba
+omegaconf
+tqdm
+wandb
+setuptools
+prodict
+torchgeometry
+tensorboard
+nestargs
