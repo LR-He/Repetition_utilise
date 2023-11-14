@@ -367,7 +367,7 @@ class TemporallySharedBlock(nn.Module):
 
         if self.pad_value is not None:
             dummy = torch.zeros(x.shape, device=x.device).float()
-            self.out_shape = torch.Size(self.forward(dummy.view(b * t, c, h, w)).shape)
+            self.out_shape = self.forward(dummy.view(b * t, c, h, w)).shape
             del dummy
 
         out = x.view(b * t, c, h, w)
