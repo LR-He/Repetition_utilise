@@ -154,9 +154,12 @@ class LTAEtransformer(nn.Module):
         out = self.dropout2(self.mlp(x))
         return out
 
+    # def forward(
+    #         self, x: Tensor, batch_positions: Optional[Tensor] = None, pad_mask: Optional[Tensor] = None
+    # ) -> Tensor | Tuple[Tensor, Tensor]:
     def forward(
             self, x: Tensor, batch_positions: Optional[Tensor] = None, pad_mask: Optional[Tensor] = None
-    ) -> Tensor | Tuple[Tensor, Tensor]:
+    ) -> Union[Tensor , Tuple[Tensor, Tensor]]:
         sz_b, seq_len, c, h, w = x.shape
         if pad_mask is not None:
             pad_mask = (
@@ -226,7 +229,7 @@ class MultiHeadAttention(nn.Module):
 
     def forward(
             self, v: Tensor, pad_mask: Optional[Tensor] = None, return_comp: bool = False
-    ) -> Tuple[Tensor, Tensor] | Tuple[Tensor, Tensor, Optional[Tensor]]:
+    ) -> Union[Tuple[Tensor, Tensor] , Tuple[Tensor, Tensor, Optional[Tensor]]]:
         d_k, d_in, n_head = self.d_k, self.d_in, self.n_head
         sz_b, seq_len, _ = v.size()
 
