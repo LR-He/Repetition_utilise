@@ -355,7 +355,7 @@ class TemporallySharedBlock(nn.Module):
     def __init__(self, pad_value: Optional[float] = None):
         super().__init__()
         # self.out_shape = None
-        self.out_shape: List[int] = None
+        self.out_shape: Optional[Tuple[int, ...]] = None
         self.pad_value = pad_value
 
     def smart_forward(self, x: Tensor, pad_mask: Optional[Tensor] = None) -> Tensor:
