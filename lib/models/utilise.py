@@ -355,7 +355,6 @@ class TemporallySharedBlock(nn.Module):
     def __init__(self, pad_value: Optional[float] = None):
         super().__init__()
         # self.out_shape = None
-        self.out_shape = [1, 1, 1, 1]
         self.pad_value = pad_value
         
 
@@ -367,7 +366,7 @@ class TemporallySharedBlock(nn.Module):
 
         if self.pad_value is not None:
             dummy = torch.zeros(x.shape, device=x.device).float()
-            self.out_shape = self.forward(dummy.view(b * t, c, h, w)).shape
+            out_shape = self.forward(dummy.view(b * t, c, h, w)).shape
             del dummy
 
         out = x.view(b * t, c, h, w)
@@ -380,7 +379,7 @@ class TemporallySharedBlock(nn.Module):
             if pad_mask.any():
                 temp = (
                         torch.ones(
-                            self.out_shape, device=x.device, requires_grad=False
+                            out_shape, device=x.device, requires_grad=False
                         )
                         * self.pad_value
                 )
