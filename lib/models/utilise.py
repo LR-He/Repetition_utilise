@@ -474,6 +474,7 @@ class UpConvLayer(TemporallySharedBlock):
             activation_last_layer: bool = True
     ):
         super().__init__(pad_value=pad_value)
+        self.out_shape = None  
         layers = []
         if norm == NormType.BATCH:
             nl = nn.BatchNorm2d
