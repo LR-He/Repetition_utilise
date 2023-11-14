@@ -378,7 +378,7 @@ class TemporallySharedBlock(nn.Module):
                 pad_mask = pad_mask.view(b * t)
 
             # if pad_mask.any():
-            if torch.any(pad_mask):
+            if torch.any(pad_mask).item():
                 temp = (
                         # torch.ones(
                         #     out_shape, device=x.device, requires_grad=False
@@ -700,7 +700,7 @@ class TemporalAggregator(nn.Module):
             return x
 
         # if pad_mask is not None and pad_mask.any() and attn_mask is not None:
-        if pad_mask is not None and torch.any(pad_mask) and attn_mask is not None:
+        if pad_mask is not None and torch.any(pad_mask).item() and attn_mask is not None:
             # if self.mode == TemporalAggregationMode.ATT_GROUP:
             if self.mode == 'att_group':
                 n_heads, b, t, _, h, w = attn_mask.shape
