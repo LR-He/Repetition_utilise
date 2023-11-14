@@ -352,10 +352,10 @@ class TemporallySharedBlock(nn.Module):
     if it is 5-D and apply the shared convolutions to all the (batch x temp) positions.
     """
 
-    def __init__(self, pad_value: Optional[float] = None):
+    def __init__(self, pad_value: Optional[float] = None, out_shape: Optional[Tuple[int, ...]] = None):
         super().__init__()
         # self.out_shape = None
-        self.out_shape: Optional[Tuple[int, ...]] = None
+        self.out_shape = out_shape
         self.pad_value = pad_value
 
     def smart_forward(self, x: Tensor, pad_mask: Optional[Tensor] = None) -> Tensor:
