@@ -355,7 +355,7 @@ class TemporallySharedBlock(nn.Module):
     def __init__(self, pad_value: Optional[float] = None):
         super().__init__()
         # self.out_shape = None
-        self.out_shape = []
+        self.out_shape: List[int] = []
         self.pad_value = pad_value
         
 
