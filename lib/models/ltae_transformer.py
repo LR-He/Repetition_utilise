@@ -5,7 +5,7 @@ https://pytorch.org/docs/stable/_modules/torch/nn/modules/transformer.html#Trans
 """
 
 import copy
-from typing import List, Literal, Optional, Tuple
+from typing import List, Literal, Optional, Tuple, Union
 
 import numpy as np
 import torch
@@ -277,9 +277,12 @@ class ScaledDotProductAttention(nn.Module):
         self.dropout = nn.Dropout(attn_dropout)
         self.softmax = nn.Softmax(dim=-1)
 
+    # def forward(
+    #         self, q: Tensor, k: Tensor, v: Tensor, pad_mask: Optional[Tensor] = None, return_comp: bool = False
+    # ) -> Tuple[Tensor, Tensor] | Tuple[Tensor, Tensor, Optional[Tensor]]:
     def forward(
             self, q: Tensor, k: Tensor, v: Tensor, pad_mask: Optional[Tensor] = None, return_comp: bool = False
-    ) -> Tuple[Tensor, Tensor] | Tuple[Tensor, Tensor, Optional[Tensor]]:
+    ) -> Union[Tuple[Tensor, Tensor], Tuple[Tensor, Tensor, Optional[Tensor]]]:
         attn = torch.matmul(q, k.transpose(1, 2))
         attn = attn / self.temperature
 
