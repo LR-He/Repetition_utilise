@@ -355,7 +355,7 @@ class TemporallySharedBlock(nn.Module):
     def __init__(self, pad_value: Optional[float] = None):
         super().__init__()
         # self.out_shape = None
-        self.out_shape = []
+        self.out_shape = [None, None, None, None]
         self.pad_value = pad_value
 
     def smart_forward(self, x: Tensor, pad_mask: Optional[Tensor] = None) -> Tensor:
@@ -368,8 +368,6 @@ class TemporallySharedBlock(nn.Module):
             dummy = torch.zeros(x.shape, device=x.device).float()
             self.out_shape = self.forward(dummy.view(b * t, c, h, w)).shape
             del dummy
-        else :
-            self.out_shape = None
 
         out = x.view(b * t, c, h, w)
         if self.pad_value is not None:
