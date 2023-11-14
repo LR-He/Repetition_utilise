@@ -355,7 +355,7 @@ class TemporallySharedBlock(nn.Module):
     def __init__(self, pad_value: Optional[float] = None):
         super().__init__()
         # self.out_shape = None
-        self.out_shape: Optional[torch.Size] = None
+        self.out_shape = torch.Size([])
         self.pad_value = pad_value
         
 
