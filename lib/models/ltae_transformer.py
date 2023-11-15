@@ -257,10 +257,10 @@ class MultiHeadAttention(nn.Module):
                 q, k, v, pad_mask=pad_mask, return_comp=return_comp
             )
         else:
-            output, attn = self.attention(
+            output, attn, comp = self.attention(
                 q, k, v, pad_mask=pad_mask, return_comp=return_comp
             )
-            comp = None
+            # comp = None
 
         attn = attn.view(n_head, sz_b, seq_len, seq_len)                # n_head x (B x H x W) x T x T
         output = output.view(n_head, sz_b, seq_len, d_in // n_head)     # n_head x (B x H x W) x T x (C // n_head)
