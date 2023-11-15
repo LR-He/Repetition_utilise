@@ -729,11 +729,13 @@ class TemporalAggregator(nn.Module):
                 attn = attn_mask.mean(dim=0)  # average over heads -> B x T x T x H x W
                 attn = attn.view(b * t, t, h, w)
 
-                attn = nn.Upsample(
-                    size=tuple(x.shape[-2:]), mode='bilinear', align_corners=False
-                )(attn)
+                # attn = nn.Upsample(
+                #     size=tuple(x.shape[-2:]), mode='bilinear', align_corners=False
+                # )(attn)
+                attn = F.interpolate(attn, size=(x.shape[-2], x.shape[-1]), mode='bilinear', align_corners=False)
 
-                attn = attn.view(b, t, t, *x.shape[-2:])
+                # attn = attn.view(b, t, t, *x.shape[-2:])
+                attn = attn.view( b, t, t, x.shape[-2], x.shape[-1])
                 attn = attn * (~pad_mask).float()[:, None, :, None, None]
                 out = (x[:, None, :, :, :, :] * attn[:, :, :, None, :, :]).sum(dim=2)
                 return out
