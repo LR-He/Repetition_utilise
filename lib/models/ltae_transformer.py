@@ -300,6 +300,7 @@ class ScaledDotProductAttention(nn.Module):
         attn = self.dropout(attn)
         output = torch.matmul(attn, v)   # v: (n_head x B x H x W) x T_in x (C // n_head)
 
-        if return_comp:
-            return output, attn, comp
-        return output, attn
+        # if return_comp:
+        #     return output, attn, comp
+        # return output, attn
+        return output, attn, comp
