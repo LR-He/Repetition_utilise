@@ -711,7 +711,8 @@ class TemporalAggregator(nn.Module):
                     # )(attn)
                     attn = F.interpolate(attn, size=(x.shape[-2], x.shape[-1]), mode='bilinear', align_corners=False)
                 else:
-                    attn = nn.AvgPool2d(kernel_size=w // x.shape[-2])(attn)
+                    # attn = nn.AvgPool2d(kernel_size=w // x.shape[-2])(attn)
+                    attn = F.avg_pool2d(attn, kernel_size=w // x.shape[-2])
 
                 attn = attn.view(n_heads, b, t, t, *x.shape[-2:])
                 attn = attn * (~pad_mask).float()[None, :, None, :, None, None]
