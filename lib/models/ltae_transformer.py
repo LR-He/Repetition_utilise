@@ -141,7 +141,7 @@ class LTAEtransformer(nn.Module):
         """
 
         sz_b, seq_len, _ = x.shape
-        out, attn = self.attention_heads(x, pad_mask=pad_mask)
+        out, attn, comp = self.attention_heads(x, pad_mask=pad_mask)
 
         # Concatenate heads
         out = (out.permute(1, 2, 0, 3).contiguous().view(sz_b, seq_len, -1))  # (B x H x W) x T x C
