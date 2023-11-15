@@ -5,7 +5,7 @@ Garnot, V. S. F., Landrieu, L., 2021. Panoptic segmentation of satellite image t
 attention networks. In Proceedings of the IEEE/CVF International Conference on Computer Vision (pp. 4872-4881).
 """
 
-from typing import List, Literal, Optional, Tuple
+from typing import List, Literal, Optional, Tuple, Union
 
 import torch
 from torch import Tensor, nn
@@ -296,11 +296,14 @@ class UTILISE(nn.Module):
             activation_last_layer=self.output_activation
         )
 
+    # def forward(
+    #         self, x: Tensor, batch_positions: Optional[Tensor] = None, return_att: bool = False
+    # ) -> Tensor | Tuple[Tensor, Tensor] | Tuple[Tensor, Optional[List[Tensor]]] | Tuple[
+    #     Tensor, Optional[Tensor], Optional[List[Tensor]]
+    # ]:
     def forward(
             self, x: Tensor, batch_positions: Optional[Tensor] = None, return_att: bool = False
-    ) -> Tensor | Tuple[Tensor, Tensor] | Tuple[Tensor, Optional[List[Tensor]]] | Tuple[
-        Tensor, Optional[Tensor], Optional[List[Tensor]]
-    ]:
+    ) -> Union[Tensor, Tuple[Tensor, Tensor], Tuple[Tensor, Optional[List[Tensor]]], Tuple[Tensor, Optional[Tensor], Optional[List[Tensor]]]]:
         pad_mask = (
             (x == self.pad_value).all(dim=-1).all(dim=-1).all(dim=-1)
         )  # BxT pad mask
