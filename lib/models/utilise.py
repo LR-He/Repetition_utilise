@@ -705,8 +705,11 @@ class TemporalAggregator(nn.Module):
                 attn = attn_mask.view(n_heads * b * t, t, h, w)
 
                 if x.shape[-2] > w:
+                    # attn = nn.Upsample(
+                    #     size=tuple(x.shape[-2:]), mode='bilinear', align_corners=False
+                    # )(attn)
                     attn = nn.Upsample(
-                        size=tuple(x.shape[-2:]), mode='bilinear', align_corners=False
+                        size=tuple(x.shape[-2], x.shape[-1]), mode='bilinear', align_corners=False
                     )(attn)
                 else:
                     attn = nn.AvgPool2d(kernel_size=w // x.shape[-2])(attn)
