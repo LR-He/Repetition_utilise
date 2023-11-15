@@ -9,6 +9,7 @@ from typing import List, Literal, Optional, Tuple
 
 import torch
 from torch import Tensor, nn
+import torch.nn.functional as F
 
 from .ltae_transformer import LTAEtransformer
 from .make_layers import get_activation, get_group_gn, str2ActivationType
@@ -708,9 +709,7 @@ class TemporalAggregator(nn.Module):
                     # attn = nn.Upsample(
                     #     size=tuple(x.shape[-2:]), mode='bilinear', align_corners=False
                     # )(attn)
-                    attn = nn.Upsample(
-                        size=(x.shape[-2], x.shape[-1]), mode='bilinear', align_corners=False
-                    )(attn)
+                    attn = F.interpolate(attn, size=(x.shape[-2], x.shape[-1]), mode='bilinear', align_corners=False)
                 else:
                     attn = nn.AvgPool2d(kernel_size=w // x.shape[-2])(attn)
 
