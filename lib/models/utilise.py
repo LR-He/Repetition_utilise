@@ -315,8 +315,11 @@ class UTILISE(nn.Module):
         out = self.in_conv.smart_forward(x, pad_mask=pad_mask)
         feature_maps = [out]
         # SPATIAL ENCODER
-        for i in range(self.n_stages - 1):
-            out = self.down_blocks[i].smart_forward(feature_maps[-1], pad_mask=pad_mask)
+        # for i in range(self.n_stages - 1):
+        #     out = self.down_blocks[i].smart_forward(feature_maps[-1], pad_mask=pad_mask)
+        #     feature_maps.append(out)
+        for i, down_block in enumerate(self.down_blocks):
+            out = down_block.smart_forward(feature_maps[-1], pad_mask=pad_mask)
             feature_maps.append(out)
         # TEMPORAL ENCODER
         if self.skip_attention:
