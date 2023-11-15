@@ -685,12 +685,12 @@ class UpConvBlock(TemporallySharedBlock):
 
 
 class TemporalAggregator(nn.Module):
-    # def __init__(self, mode: TemporalAggregationMode = TemporalAggregationMode.ATT_GROUP):
-    #     super().__init__()
-    #     self.mode = mode
-    def __init__(self, mode = 'att_group'):
+    def __init__(self, mode: TemporalAggregationMode = TemporalAggregationMode.ATT_GROUP):
         super().__init__()
         self.mode = mode
+    # def __init__(self, mode = 'att_group'):
+    #     super().__init__()
+    #     self.mode = mode
 
     def forward(self, x: Tensor, pad_mask: Optional[Tensor] = None, attn_mask: Optional[Tensor] = None) -> Tensor:
 
@@ -699,8 +699,8 @@ class TemporalAggregator(nn.Module):
             return x
 
         if pad_mask is not None and pad_mask.any() and attn_mask is not None:
-            # if self.mode == TemporalAggregationMode.ATT_GROUP:
-            if self.mode == 'att_group':
+            if self.mode == TemporalAggregationMode.ATT_GROUP:
+            # if self.mode == 'att_group':
                 n_heads, b, t, _, h, w = attn_mask.shape
                 attn = attn_mask.view(n_heads * b * t, t, h, w)
 
@@ -719,8 +719,8 @@ class TemporalAggregator(nn.Module):
                 out = out.sum(dim=3)  # n_heads x B x T x (C/n_heads) x H x W
                 out = torch.cat([group for group in out], dim=2)  # B x T x C x H x W
                 return out
-            # if self.mode == TemporalAggregationMode.ATT_MEAN:
-            if self.mode == 'att_mean':
+            if self.mode == TemporalAggregationMode.ATT_MEAN:
+            # if self.mode == 'att_mean':
                 n_heads, b, t, _, h, w = attn_mask.shape
                 attn = attn_mask.mean(dim=0)  # average over heads -> B x T x T x H x W
                 attn = attn.view(b * t, t, h, w)
@@ -736,8 +736,8 @@ class TemporalAggregator(nn.Module):
 
         else:
             if attn_mask is not None:
-                # if self.mode == TemporalAggregationMode.ATT_GROUP:
-                if self.mode == 'att_group':
+                if self.mode == TemporalAggregationMode.ATT_GROUP:
+                # if self.mode == 'att_group':
                     n_heads, b, t, _, h, w = attn_mask.shape
                     attn = attn_mask.view(n_heads * b * t, t, h, w)
                     if x.shape[-2] > w:
