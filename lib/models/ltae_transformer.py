@@ -154,12 +154,12 @@ class LTAEtransformer(nn.Module):
         out = self.dropout2(self.mlp(x))
         return out
 
-    def forward(
-            self, x: Tensor, batch_positions: Optional[Tensor] = None, pad_mask: Optional[Tensor] = None
-    ) -> Tensor | Tuple[Tensor, Tensor]:
     # def forward(
     #         self, x: Tensor, batch_positions: Optional[Tensor] = None, pad_mask: Optional[Tensor] = None
-    # ) -> Union[Tensor , Tuple[Tensor, Tensor]]:
+    ) -> Tensor | Tuple[Tensor, Tensor]:
+    def forward(
+            self, x: Tensor, batch_positions: Optional[Tensor] = None, pad_mask: Optional[Tensor] = None
+    ) :
         sz_b, seq_len, c, h, w = x.shape
         if pad_mask is not None:
             pad_mask = (
@@ -280,12 +280,12 @@ class ScaledDotProductAttention(nn.Module):
         self.dropout = nn.Dropout(attn_dropout)
         self.softmax = nn.Softmax(dim=-1)
 
-    def forward(
-            self, q: Tensor, k: Tensor, v: Tensor, pad_mask: Optional[Tensor] = None, return_comp: bool = False
-    ) -> Tuple[Tensor, Tensor] | Tuple[Tensor, Tensor, Optional[Tensor]]:
     # def forward(
     #         self, q: Tensor, k: Tensor, v: Tensor, pad_mask: Optional[Tensor] = None, return_comp: bool = False
-    # ) -> Union[Tuple[Tensor, Tensor], Tuple[Tensor, Tensor, Optional[Tensor]]]:
+    # ) -> Tuple[Tensor, Tensor] | Tuple[Tensor, Tensor, Optional[Tensor]]:
+    def forward(
+            self, q: Tensor, k: Tensor, v: Tensor, pad_mask: Optional[Tensor] = None, return_comp: bool = False
+    ) :
         attn = torch.matmul(q, k.transpose(1, 2))
         attn = attn / self.temperature
 
