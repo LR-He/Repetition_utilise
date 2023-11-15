@@ -288,7 +288,7 @@ class ScaledDotProductAttention(nn.Module):
     # ) -> Tuple[Tensor, Tensor] | Tuple[Tensor, Tensor, Optional[Tensor]]:
     def forward(
             self, q: Tensor, k: Tensor, v: Tensor, pad_mask: Optional[Tensor] = None, return_comp: bool = False
-    ) -> Union[Tuple[Tensor, Tensor], Tuple[Tensor, Tensor, Optional[Tensor]]]:
+    ) -> Tuple[Tensor, Tensor, Optional[Tensor]]:
         attn = torch.matmul(q, k.transpose(1, 2))
         attn = attn / self.temperature
 
