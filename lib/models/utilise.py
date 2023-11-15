@@ -747,28 +747,33 @@ class TemporalAggregator(nn.Module):
                     n_heads, b, t, _, h, w = attn_mask.shape
                     attn = attn_mask.view(n_heads * b * t, t, h, w)
                     if x.shape[-2] > w:
-                        attn = nn.Upsample(
-                            size=tuple(x.shape[-2:]), mode='bilinear', align_corners=False
-                        )(attn)
+                        # attn = nn.Upsample(
+                        #     size=tuple(x.shape[-2:]), mode='bilinear', align_corners=False
+                        # )(attn)
+                        attn = F.interpolate(attn, size=(x.shape[-2], x.shape[-1]), mode='bilinear', align_corners=False)
                     else:
-                        attn = nn.AvgPool2d(kernel_size=w // x.shape[-2])(attn)
-                    attn = attn.view(n_heads, b, t, t, *x.shape[-2:])  # n_heads x B x T x T x H x W
+                        # attn = nn.AvgPool2d(kernel_size=w // x.shape[-2])(attn)
+                        attn = F.avg_pool2d(attn, kernel_size=w // x.shape[-2])
+                    # attn = attn.view(n_heads, b, t, t, *x.shape[-2:])  # n_heads x B x T x T x H x W
+                    attn = attn.view(n_heads, b, t, t, x.shape[-2], x.shape[-1])  # n_heads x B x T x T x H x W
                     out = torch.stack(x.chunk(n_heads, dim=2))  # n_heads x B x T x (C/n_heads) x H x W
                     out = attn[:, :, :, :, None, :, :] * out[:, :, None, :, :, :, :]
                     out = out.sum(dim=3)  # n_heads x B x T x (C/n_heads) x H x W
                     out = torch.cat([group for group in out], dim=2)  # -> B x T x C x H x W
                     return out
-                # if self.mode == TemporalAggregationMode.ATT_MEAN:
-                if self.mode == 'att_mean':
+                if self.mode == TemporalAggregationMode.ATT_MEAN:
+                # if self.mode == 'att_mean':
                     n_heads, b, t, _, h, w = attn_mask.shape
                     attn = attn_mask.mean(dim=0)  # average over heads -> B x T x T x H x W
                     attn = attn.view(b * t, t, h, w)
 
-                    attn = nn.Upsample(
-                        size=tuple(x.shape[-2:]), mode='bilinear', align_corners=False
-                    )(attn)
+                    # attn = nn.Upsample(
+                    #     size=tuple(x.shape[-2:]), mode='bilinear', align_corners=False
+                    # )(attn)
+                    attn = F.interpolate(attn, size=(x.shape[-2], x.shape[-1]), mode='bilinear', align_corners=False)
 
-                    attn = attn.view(b, t, t, *x.shape[-2:])
+                    # attn = attn.view(b, t, t, *x.shape[-2:])
+                    attn = attn.view(b, t, t, x.shape[-2], x.shape[-1])
                     out = (x[:, None, :, :, :, :] * attn[:, :, :, None, :, :]).sum(dim=2)
                     return out
 
