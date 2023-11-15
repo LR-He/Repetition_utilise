@@ -232,7 +232,7 @@ class MultiHeadAttention(nn.Module):
     # ) -> Tuple[Tensor, Tensor] | Tuple[Tensor, Tensor, Optional[Tensor]]:
     def forward(
             self, v: Tensor, pad_mask: Optional[Tensor] = None, return_comp: bool = False
-    ) -> Union[Tuple[Tensor, Tensor], Tuple[Tensor, Tensor, Optional[Tensor]]]:
+    ) -> Tuple[Tensor, Tensor, Optional[Tensor]]:
         d_k, d_in, n_head = self.d_k, self.d_in, self.n_head
         sz_b, seq_len, _ = v.size()
 
@@ -260,14 +260,18 @@ class MultiHeadAttention(nn.Module):
             output, attn, comp = self.attention(
                 q, k, v, pad_mask=pad_mask, return_comp=return_comp
             )
+            # output, attn = self.attention(
+            #     q, k, v, pad_mask=pad_mask, return_comp=return_comp
+            # )
             # comp = None
 
         attn = attn.view(n_head, sz_b, seq_len, seq_len)                # n_head x (B x H x W) x T x T
         output = output.view(n_head, sz_b, seq_len, d_in // n_head)     # n_head x (B x H x W) x T x (C // n_head)
 
-        if return_comp:
-            return output, attn, comp
-        return output, attn
+        # if return_comp:
+        #     return output, attn, comp
+        # return output, attn
+        return output, attn, comp
 
 
 class ScaledDotProductAttention(nn.Module):
